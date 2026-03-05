@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>حاسبتي السريعة</title>
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: #f2f2f7; 
+            display: flex; justify-content: center; align-items: flex-start; 
+            padding-top: 50px; margin: 0; min-height: 100vh;
+        }
+        .app-container { 
+            background: white; width: 92%; max-width: 400px; 
+            padding: 25px; border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+        }
+        h2 { text-align: center; color: #1c1c1e; margin-bottom: 25px; font-size: 24px; }
+        .field { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #3a3a3c; font-size: 15px; }
+        
+        /* تصميم المدخلات لتبدو مثل تطبيقات iOS */
+        input { 
+            width: 100%; height: 50px; border: none; 
+            background: #f2f2f7; border-radius: 12px; 
+            padding: 0 15px; font-size: 18px; color: #1c1c1e;
+            outline: none; transition: 0.2s;
+        }
+        input:focus { background: #e5e5ea; box-shadow: 0 0 0 2px #007aff; }
+
+        .results-box { 
+            background: #007aff; color: white; 
+            padding: 20px; border-radius: 15px; margin-top: 25px;
+        }
+        .result-item { 
+            display: flex; justify-content: space-between; 
+            margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 8px;
+        }
+        .result-item:last-child { border: none; margin-bottom: 0; }
+        .label-text { font-size: 14px; opacity: 0.9; }
+        .value-text { font-size: 18px; font-weight: bold; font-family: 'Courier New', monospace; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <h2>حاسبة القرض</h2>
+    
+    <div class="field">
+        <label>المبلغ الأصلي</label>
+        <input type="number" id="p" inputmode="decimal" placeholder="0.00" oninput="doCalc()">
+    </div>
+
+    <div class="field">
+        <label>نسبة الفائدة (%)</label>
+        <input type="number" id="r" inputmode="decimal" placeholder="1.9" oninput="doCalc()">
+    </div>
+
+    <div class="field">
+        <label>عدد السنوات</label>
+        <input type="number" id="y" inputmode="decimal" placeholder="مثلاً 5" oninput="doCalc()">
+    </div>
+
+    <div class="results-box">
+        <div class="result-item">
+            <span class="label-text">إجمالي الفائدة:</span>
+            <span class="value-text" id="resInterest">0</span>
+        </div>
+        <div class="result-item">
+            <span class="label-text">المبلغ الكلي:</span>
+            <span class="value-text" id="resTotal">0</span>
+        </div>
+        <div class="result-item" style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-top: 10px;">
+            <span class="label-text">القسط الشهري:</span>
+            <span class="value-text" id="resMonthly">0</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    function doCalc() {
+        const p = parseFloat(document.getElementById('p').value) || 0;
+        const r = parseFloat(document.getElementById('r').value) || 0;
+        const y = parseFloat(document.getElementById('y').value) || 0;
+
+        if (p > 0 && y > 0) {
+            const interest = (p * (r / 100)) * y;
+            const total = interest + p;
+            const monthly = total / (y * 12);
+
+            document.getElementById('resInterest').innerText = interest.toLocaleString();
+            document.getElementById('resTotal').innerText = total.toLocaleString();
+            document.getElementById('resMonthly').innerText = monthly.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        } else {
+            document.getElementById('resInterest').innerText = "0";
+            document.getElementById('resTotal').innerText = "0";
+            document.getElementById('resMonthly').innerText = "0";
+        }
+    }
+</script>
+
+</body>
+</html>
